@@ -5,10 +5,13 @@
 #define MyAppPublisher "WinVision Lab"
 #define MyAppExeName "WinVisionApp.exe"
 
-#define BuildBinPath       SourcePath + "..\\build\\bin\\"
+#define InstallBinPath      SourcePath + "..\\install\\bin\\"
+#define BuildBinPath        SourcePath + "..\\build\\bin\\"
 #define BuildBinReleasePath SourcePath + "..\\build\\bin\\Release\\"
 
-#ifexist "{#BuildBinPath}WinVisionApp.exe"
+#ifexist "{#InstallBinPath}WinVisionApp.exe"
+  #define MyAppSource "{#InstallBinPath}WinVisionApp.exe"
+#elseifexist "{#BuildBinPath}WinVisionApp.exe"
   #define MyAppSource "{#BuildBinPath}WinVisionApp.exe"
 #elseifexist "{#BuildBinReleasePath}WinVisionApp.exe"
   #define MyAppSource "{#BuildBinReleasePath}WinVisionApp.exe"
