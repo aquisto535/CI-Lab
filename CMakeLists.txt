@@ -5,11 +5,22 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# 소스가 현재 디렉터리 혹은 한 단계 상위에 있는 경우를 모두 지원
+set(WINVISION_SOURCE_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+if (NOT EXISTS "${WINVISION_SOURCE_ROOT}/ImageCore/src/Image.cpp")
+    get_filename_component(_parent_dir "${WINVISION_SOURCE_ROOT}" DIRECTORY)
+    if (EXISTS "${_parent_dir}/ImageCore/src/Image.cpp")
+        set(WINVISION_SOURCE_ROOT "${_parent_dir}")
+    else()
+        message(FATAL_ERROR "ImageCore/src/Image.cpp 경로를 ${CMAKE_CURRENT_SOURCE_DIR} 또는 상위 디렉터리에서 찾을 수 없습니다.")
+    endif()
+endif()
+
 # 프로젝트별 루트 경로를 한 곳에서 관리하면 VS/CI 모두에서 경로 헷갈리지 않음
-set(IMAGECORE_SRC_DIR     ${CMAKE_CURRENT_SOURCE_DIR}/ImageCore/src)
-set(IMAGECORE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ImageCore/include)
-set(WINVISION_SRC_DIR     ${CMAKE_CURRENT_SOURCE_DIR}/WinVision/src)
-set(WINVISION_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/WinVision/include)
+set(IMAGECORE_SRC_DIR     ${WINVISION_SOURCE_ROOT}/ImageCore/src)
+set(IMAGECORE_INCLUDE_DIR ${WINVISION_SOURCE_ROOT}/ImageCore/include)
+set(WINVISION_SRC_DIR     ${WINVISION_SOURCE_ROOT}/WinVision/src)
+set(WINVISION_INCLUDE_DIR ${WINVISION_SOURCE_ROOT}/WinVision/include)
 
 # 빌드 결과물을 한 디렉터리(bin/lib)에 모아두면 GitHub Actions, Inno Setup에서 다루기 쉬움
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -61,7 +72,7 @@ if (WINVISION_BUILD_TESTS)
     enable_testing()
 
     add_executable(ImageCoreTests
-        ImageCoreTests/ImageCoreTests.cpp
+        ${WINVISION_SOURCE_ROOT}/ImageCoreTests/ImageCoreTests.cpp
     )
     target_include_directories(ImageCoreTests PRIVATE ${IMAGECORE_INCLUDE_DIR})
     target_link_libraries(ImageCoreTests
