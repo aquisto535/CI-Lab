@@ -1,0 +1,39 @@
+name: Windows CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: windows-latest   # VS2022 이미지, VS2019가 꼭 필요하면 windows-2019
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -S . -B build -G "Ninja" -DWINVISION_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Test
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Install (optional, Inno Setup 전에 산출물 모으기)
+        run: cmake --install build --config Release --prefix install
+
+      # Inno Setup 사용 시
+      - name: Install Inno Setup
+        run: winget install --id JRSoftware.InnoSetup -e --source winget
+
+      - name: Package installer
+        run: iscc installer\WinVision.iss
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: WinVision_artifacts
+          path: |
+            install/bin/**
+            installer/Output/*.exe
