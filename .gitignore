@@ -39,3 +39,30 @@
 
 # debug information files
 *.dwo
+
+# log
+*.tlog
+
+# Build caches
+*.ipdb
+*.iobj
+*.idb
+*.ipch
+*.lastbuildstate
+
+# Visual Studio user files
+*.user
+*.vcxproj.user
+*.VC.db
+*.VC.opendb
+*.cachefile
+
+# Build logs
+*.log
+
+# Installer / package artifacts
+*.nupkg
+*.msi
+*.msix
+*.msm
+*.msp
