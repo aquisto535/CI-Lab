@@ -9,11 +9,11 @@
 #define BuildBinReleasePath "..\build\bin\Release\"
 #define InstallBinPath     "..\install\bin\"
 
-#ifexist InstallBinPath + "WinVisionApp.exe"
+#if FileExists(InstallBinPath + "WinVisionApp.exe")
   #define MyAppSource InstallBinPath + "WinVisionApp.exe"
-#elseifexist BuildBinPath + "WinVisionApp.exe"
+#elif FileExists(BuildBinPath + "WinVisionApp.exe")
   #define MyAppSource BuildBinPath + "WinVisionApp.exe"
-#elseifexist BuildBinReleasePath + "WinVisionApp.exe"
+#elif FileExists(BuildBinReleasePath + "WinVisionApp.exe")
   #define MyAppSource BuildBinReleasePath + "WinVisionApp.exe"
 #else
   #error "WinVisionApp.exe not found. Build the project before running iscc."
