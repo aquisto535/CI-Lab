@@ -5,16 +5,16 @@
 #define MyAppPublisher "WinVision Lab"
 #define MyAppExeName "WinVisionApp.exe"
 
-#define BuildBinPath       SourcePath + "..\\build\\bin\\"
-#define BuildBinReleasePath SourcePath + "..\\build\\bin\\Release\\"
-#define InstallBinPath     SourcePath + "..\\install\\bin\\"
+#define BuildBinPath       "..\build\bin\"
+#define BuildBinReleasePath "..\build\bin\Release\"
+#define InstallBinPath     "..\install\bin\"
 
-#ifexist "{#InstallBinPath}WinVisionApp.exe"
-  #define MyAppSource "{#InstallBinPath}WinVisionApp.exe"
-#elseifexist "{#BuildBinPath}WinVisionApp.exe"
-  #define MyAppSource "{#BuildBinPath}WinVisionApp.exe"
-#elseifexist "{#BuildBinReleasePath}WinVisionApp.exe"
-  #define MyAppSource "{#BuildBinReleasePath}WinVisionApp.exe"
+#ifexist InstallBinPath + "WinVisionApp.exe"
+  #define MyAppSource InstallBinPath + "WinVisionApp.exe"
+#elseifexist BuildBinPath + "WinVisionApp.exe"
+  #define MyAppSource BuildBinPath + "WinVisionApp.exe"
+#elseifexist BuildBinReleasePath + "WinVisionApp.exe"
+  #define MyAppSource BuildBinReleasePath + "WinVisionApp.exe"
 #else
   #error "WinVisionApp.exe not found. Build the project before running iscc."
 #endif
