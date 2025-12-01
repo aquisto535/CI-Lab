@@ -161,45 +161,33 @@ void CWinVisionDlg::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 		//문자열 추출 로직
-	try
-	{
-		//TListID tList;
-		std::string strData;
-		std::stringstream ss(strData);
-		std::string line;
+	CString strData = _T("");
+	CString strItem(_T(""));
+	int pos = 0;
+	TCHAR c = NULL;
 
-		while (std::getline(ss, line))
+	while (pos != -1)
+	{
+		strItem = strData.Tokenize(_T("\n"), pos);
+		strItem.TrimRight(_T("\r"));
+		c = strItem.GetAt(0);
+
+		//WriteLogN("Agent Login Debug [%s] :strItem - [%s]", pHost->stItem.szlmAddr, strItem);
+
+		if (strItem.IsEmpty())
 		{
-			//파싱 오류 문자열 예외처리 로직
-			// 
-			// \r 제거
-			if (!line.empty() && line.back() == '\r')
-			{
-				line.pop_back();
-			}
-
-			if (line.at(0) != 'R' || line.length() > 250)
-			{
-
-
-			}
-
-			// 정상 문자열 리스트 대입
-			if (!line.empty())
-			{
-				//WriteLogN("Agent Login Debug [%s] :strItem - [%s]", pHost->stItem.szlmAddr, line.c_str());
-				CString strLine = line.c_str();
-				//tStrList.push_back(strLine);
-			}
+			continue;
 		}
+		else if (strItem.GetLength() > 250 || c != 'R')
+		{
+
+		}
+		else
+		{
+			//tStrList.push_back(strItem);
+		}
+
 	}
-	catch (const std::exception& e)
-	{
-		//WriteLogN("Agent Login Debug [%s] - std::getline 예외: %s\n", pHost->stItem.szlmAddr, e.what());
-	}
-	catch (...)
-	{
-		//WriteLogN("Agent Login Debug [%s] : 알 수 없는 std 예외 발생\n", pHost->stItem.szlmAddr);
-	}
+
 	CDialogEx::OnOK();
 }
