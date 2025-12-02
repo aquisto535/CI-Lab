@@ -48,3 +48,4 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: flawfinder_results.sarif
+          category: flawfinder
