@@ -26,15 +26,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: flawfinder_scan
-        uses: david-a-wheeler/flawfinder@8e4a779ad59dbfaee5da586aa9210853b701959c
-        env:
-          PYTHONUTF8: "0"  # ✅ [핵심] 이 줄을 추가해서 인코딩 오류를 무시하게 합니다
+      # 1. 파이썬 환경을 직접 세팅합니다
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          arguments: '--sarif ./'
-          output: 'flawfinder_results.sarif'
+          python-version: '3.x'
+
+      # 2. Flawfinder를 직접 설치합니다 (pip)
+      - name: Install Flawfinder
+        run: pip install flawfinder
+
+      # 3. 인코딩 무시 옵션을 켜고 실행합니다
+      # LC_ALL=C.ISO-8859-1 : 모든 바이트를 문자로 취급 (한국어 깨져도 에러는 안 남)
+      - name: Run Flawfinder
+        run: flawfinder --sarif ./ > flawfinder_results.sarif
+        env:
+          PYTHONUTF8: "0"
+          LC_ALL: "C.ISO-8859-1"
 
       - name: Upload analysis results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: ${{github.workspace}}/flawfinder_results.sarif
+          sarif_file: flawfinder_results.sarif
