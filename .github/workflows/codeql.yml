@@ -48,6 +48,6 @@ jobs:
 
     # 분석 수행 및 결과 업로드
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@v4
       with:
         category: "/language:${{ matrix.language }}"
