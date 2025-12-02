@@ -42,7 +42,7 @@ jobs:
         run: flawfinder --sarif ./ > flawfinder_results.sarif
         env:
           PYTHONUTF8: "0"
-          LC_ALL: "C.ISO-8859-1"
+          LC_ALL:  "C.UTF-8"
 
       - name: Upload analysis results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
