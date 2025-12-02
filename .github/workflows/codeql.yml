@@ -32,7 +32,7 @@ jobs:
 
     # CodeQL 초기화
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@v4
       with:
         languages: ${{ matrix.language }}
         # C++ 분석 쿼리 모음 (security-and-quality는 보안 + 코드 품질까지 검사)
