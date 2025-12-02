@@ -41,7 +41,7 @@ jobs:
 
       # MSVC 분석 실행 + 자동 업로드
       - name: Run MSVC Code Analysis
-        uses: microsoft/msvc-code-analysis-action@v1.0
+        uses: microsoft/msvc-code-analysis-action@v1.1.2
         id: run-analysis
         with:
           cmakeBuildDirectory: ${{ env.build }}
