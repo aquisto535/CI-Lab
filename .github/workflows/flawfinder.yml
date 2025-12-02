@@ -28,6 +28,8 @@ jobs:
 
       - name: flawfinder_scan
         uses: david-a-wheeler/flawfinder@8e4a779ad59dbfaee5da586aa9210853b701959c
+        env:
+          PYTHONUTF8: "0"  # ✅ [핵심] 이 줄을 추가해서 인코딩 오류를 무시하게 합니다
         with:
           arguments: '--sarif ./'
           output: 'flawfinder_results.sarif'
